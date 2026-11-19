@@ -1,5 +1,5 @@
 #!/bin/bash
-# The fidelity grid: one array task per line of tasks/fid_tasks.txt (480 lines); the file must not
+# The fidelity grid: one array task per line of scripts/fid_tasks.txt (480 lines); the file must not
 # change while the array runs. The datasets are fidelity_data.zip in the Release.
 #   REPO=$PWD sbatch --array=0-479%20 scripts/fidelity.sh
 
@@ -17,7 +17,7 @@ cd "$REPO"
 mkdir -p logs
 
 # one task per line, '#' comments ignored: <arm marg|joint> <band imd|oomd> <N> <seed> <cond A|F|C|DRH>
-TASKS=${TASKS:-tasks/fid_tasks.txt}
+TASKS=${TASKS:-scripts/fid_tasks.txt}
 [ -f "$TASKS" ] || { echo "FATAL: $TASKS missing -- see the task-file format above"; exit 1; }
 LINE=$(grep -v '^#' "$TASKS" | sed -n "$((${SLURM_ARRAY_TASK_ID:-0} + 1))p")
 [ -n "$LINE" ] || { echo "no task at index ${SLURM_ARRAY_TASK_ID:-0}"; exit 0; }
