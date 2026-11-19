@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.DS_Store
+
+dataset/
+*.npz
+*.arrow
+mimic*.csv
+mimic_iv_data/
+bq-results-*.csv
+
+.env
+
+checkpoints/
+*.pth
+*.zip
+logs/
+paper/
+marginal_*/
+joint_*/
+bench_io_*/
+*.json
+*.tex
+result_*.txt
+.hf_cache/
+
+# Python environments
+env/
+env_*/
+.venv/
+venv/
