@@ -1,0 +1,2 @@
+# windows with a queried channel unobserved before t_star = 96
+26 60 94 130 180 375 377 386 397

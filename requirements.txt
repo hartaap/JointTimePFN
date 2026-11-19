@@ -1,0 +1,14 @@
+# Core environment; pyro-ppl is pinned because it is the NUTS reference.
+# The external baselines need their own environments.
+gluonts
+joblib
+numpy
+nvidia-ml-py
+pandas
+positional-encodings
+pyarrow
+pyro-ppl==1.9.1
+scikit-learn
+scipy
+torch
+tqdm
