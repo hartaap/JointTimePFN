@@ -240,14 +240,12 @@ def score_joint_ppd(MU, SIG, mu_phi, Sig_phi, n_mc=4000, seed=0):
     J, K = MU.shape
     rng = np.random.default_rng(seed)
 
-    Y, src = mixture_sample(MU, SIG, n_mc, rng)
+    Y, _ = mixture_sample(MU, SIG, n_mc, rng)
     LOG = _component_logpdf(Y, MU, SIG)
     lp = gauss_logpdf(Y, mu_phi, _chol(Sig_phi, 'Sig_phi'))
 
-    lq_self = _lse(LOG, 0) - np.log(J)
-    LOO = LOG.copy()
-    LOO[src, np.arange(n_mc)] = -np.inf
-    lq = _lse(LOO, 0) - np.log(J - 1)
+    # log q*(y) of the full mixture of J components
+    lq = _lse(LOG, 0) - np.log(J)
 
     kl_total = float(np.mean(lq - lp))
     H_q = float(-np.mean(lq))
@@ -256,5 +254,5 @@ def score_joint_ppd(MU, SIG, mu_phi, Sig_phi, n_mc=4000, seed=0):
     kl_amort = kl_gauss(mu_G, S_G, mu_phi, Sig_phi)
     floor_mc = H_G - H_q
 
-    return dict(kl_total_self=float(np.mean(lq_self - lp)) / K, kl_amort=kl_amort / K, decomp_residual=(kl_total - floor_mc - kl_amort) /K,
-                kl_G_vs_diag=kl_gauss(mu_G, S_G, mu_G,np.diag(np.diag(S_G))) / K)
+    return dict(kl_total_self=kl_total / K, kl_amort=kl_amort / K, decomp_residual=(kl_total - floor_mc - kl_amort) / K,
+                kl_G_vs_diag=kl_gauss(mu_G, S_G, mu_G, np.diag(np.diag(S_G))) / K)
